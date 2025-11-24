@@ -9,7 +9,7 @@
 2. Navigate to repo directory
 3. Run the following command
    - ``docker-compose up``
-4. Wait for RabbitMQ to up and running. Service containers restarts till RabbitMQ is ready.
+4. Wait for RabbitMQ to up and running. Service containers restart till RabbitMQ is ready.
 
 ## Accessing the APIs
    - StockService API: http://localhost:5001/swagger/index.html
