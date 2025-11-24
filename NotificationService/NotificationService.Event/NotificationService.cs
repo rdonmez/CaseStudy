@@ -51,7 +51,7 @@ namespace NotificationService.Event
                             OrderId = orderEvent.OrderId,
                             CustomerEmail = orderEvent.CustomerEmail,
                             CustomerId = orderEvent.CustomerId,
-                            Message = "Siparişiniz işleniyor...",
+                            Message = $"Siparişiniz oluşturuldu. OrderId: ${orderEvent.OrderId}. ",
                             NotificationType = NotificationType.OrderCreated
                         });
                         
