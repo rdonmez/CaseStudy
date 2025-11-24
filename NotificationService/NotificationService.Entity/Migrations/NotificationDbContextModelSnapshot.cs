@@ -30,7 +30,6 @@ namespace NotificationService.Entity.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("CustomerEmail")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("CustomerId")
@@ -46,8 +45,14 @@ namespace NotificationService.Entity.Migrations
                     b.Property<int>("NotificationType")
                         .HasColumnType("integer");
 
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 

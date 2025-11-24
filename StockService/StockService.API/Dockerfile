@@ -8,8 +8,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 COPY ["./StockService/StockService.API/StockService.API.csproj", "StockService.API/"]
-COPY ["./StockService/StockService.Event/StockService.Event.csproj", "StockService.Event/"]
 COPY ["./StockService/StockService.Entity/StockService.Entity.csproj", "StockService.Entity/"]
+COPY ["./StockService/StockService.Event/StockService.Event.csproj", "StockService.Event/"]
 
 RUN dotnet restore "StockService.API/StockService.API.csproj"
 

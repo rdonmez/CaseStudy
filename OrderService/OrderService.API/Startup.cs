@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using OrderService.API.Extensions;
 using OrderService.Entity;
 using OrderService.Entity.Repository;
+using OrderService.Event;
 
 namespace OrderService.API
 {
@@ -25,6 +26,8 @@ namespace OrderService.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         { 
+            services.UseRabbitMq(Configuration);
+            
             services.AddDbContext<OrderDbContext>(options => 
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
             );

@@ -7,6 +7,8 @@ namespace NotificationService.Entity.Domain
     {
         public int Id { get; set; }
         
+        public int OrderId { get; set; }
+        
         public string Message { get; set; } = string.Empty;
         
         public NotificationType NotificationType { get; set; }
@@ -15,9 +17,11 @@ namespace NotificationService.Entity.Domain
         
         public int CustomerId { get; set; }
         
-        public string CustomerEmail { get; set; }
+        public string? CustomerEmail { get; set; }
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         
         public string? ErrorMessage { get; set; } = null;
     }

@@ -36,6 +36,8 @@ namespace OrderService.API.Handlers
 
                 _repository.UpdateOrder(order);
 
+                // TODO: Publish OrderApproved event.
+                
                 return order;
             }
             catch (DbUpdateException ex)

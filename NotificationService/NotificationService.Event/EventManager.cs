@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using StockService.Event.Exceptions;
+using NotificationService.Event.Exceptions;
 
-namespace StockService.Event
+namespace NotificationService.Event
 {
     public class EventManager : IAsyncDisposable
     {
@@ -34,6 +34,7 @@ namespace StockService.Event
             };
 
             var connection = await factory.CreateConnectionAsync();
+            
             var channel = await connection.CreateChannelAsync();
 
             return new EventManager(connection, channel);

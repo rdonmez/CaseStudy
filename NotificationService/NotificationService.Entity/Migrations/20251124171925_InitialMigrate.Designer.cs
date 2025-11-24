@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NotificationService.Entity.Migrations
 {
     [DbContext(typeof(NotificationDbContext))]
-    [Migration("20251123125908_InitialMigrate")]
+    [Migration("20251124171925_InitialMigrate")]
     partial class InitialMigrate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,6 @@ namespace NotificationService.Entity.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("CustomerEmail")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("CustomerId")
@@ -48,8 +47,14 @@ namespace NotificationService.Entity.Migrations
                     b.Property<int>("NotificationType")
                         .HasColumnType("integer");
 
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 

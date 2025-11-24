@@ -9,6 +9,7 @@ namespace NotificationService.API.Requests
         public string Message { get; set; } = string.Empty;
         public int CustomerId { get; set; }
         
+        public int OrderId { get; set; }
         public string CustomerEmail { get; set; }
     }
 }

@@ -16,6 +16,7 @@ namespace OrderService.Entity.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     OrderDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     CustomerId = table.Column<int>(type: "integer", nullable: false),
+                    CustomerEmail = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: true)
                 },

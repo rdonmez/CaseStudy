@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+using OrderService.Entity.Domain;
 
-namespace OrderService.Entity.Domain
+namespace OrderService.Event.Events
 {
-    public class Order
-    {
-        [Key]
-        public int Id { get; set; }
+    public class OrderCreated : ICloneable
+    { 
+        public int OrderId { get; set; }
         
         public DateTime OrderDate { get; set; }
         
@@ -19,15 +17,15 @@ namespace OrderService.Entity.Domain
         public OrderStatus Status { get; set; }
     
         public string Address { get; set; }
+        
+        public decimal Total  { get; set; }
     
         public List<OrderItem> Items { get; set; } = new List<OrderItem>();
-    
-        public decimal Total
+
+        public object Clone()
         {
-            get
-            {
-                return Items.Select(x=> x.Quantity * x.UnitPrice).Sum();
-            }
-        }
+            return this.MemberwiseClone();
+        } 
     }
 }
+

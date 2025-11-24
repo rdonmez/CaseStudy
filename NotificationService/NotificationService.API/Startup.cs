@@ -1,22 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization; 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting; 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting; 
 using Microsoft.OpenApi.Models;
 using NotificationService.API.Extensions;
 using NotificationService.Entity;
 using NotificationService.Entity.Repositories;
+using NotificationService.Event;
 
 namespace NotificationService.API
 {
@@ -32,13 +26,20 @@ namespace NotificationService.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<NotificationDbContext>(options => 
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
-            );
-            services.AddScoped<INotificationRepository, NotificationRepository>();
-            services.RegisterRequestHandlers();
-            services.AddControllers();  
+           
+            services.UseRabbitMq(Configuration);
             
+            services.AddDbContext<NotificationDbContext>(options => 
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection") ?? string.Empty)
+            );
+            
+            services.AddTransient<INotificationRepository, NotificationRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddHostedService<Event.NotificationService>();
+            services.AddHostedService<NotificationSendService>();
+            services.RegisterRequestHandlers();
+            services.AddControllers();
+             
             services.AddSwaggerGen();
             services.AddSwaggerGen(c =>
             {
@@ -57,7 +58,7 @@ namespace NotificationService.API
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
+        { 
             using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 scope.ServiceProvider.GetService<NotificationDbContext>().Database.Migrate();

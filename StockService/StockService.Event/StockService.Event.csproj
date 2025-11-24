@@ -3,9 +3,11 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>StockService.Event</RootNamespace>
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\OrderService\OrderService.Entity\OrderService.Entity.csproj" />
       <ProjectReference Include="..\StockService.Entity\StockService.Entity.csproj" />
     </ItemGroup>
 

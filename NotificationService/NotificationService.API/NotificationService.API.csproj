@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\NotificationService.Entity\NotificationService.Entity.csproj" />
+      <ProjectReference Include="..\NotificationService.Event\NotificationService.Event.csproj" />
     </ItemGroup>
 
     <ItemGroup>

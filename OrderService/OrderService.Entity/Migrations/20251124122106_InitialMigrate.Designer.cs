@@ -10,7 +10,7 @@ using OrderService.Entity;
 namespace OrderService.Entity.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20251123111531_InitialMigrate")]
+    [Migration("20251124122106_InitialMigrate")]
     partial class InitialMigrate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,9 @@ namespace OrderService.Entity.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Address")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerEmail")
                         .HasColumnType("text");
 
                     b.Property<int>("CustomerId")

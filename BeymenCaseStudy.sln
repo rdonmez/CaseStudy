@@ -19,11 +19,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{8431916E-6A66-4F4A-ADCF-AF0D113B2EF2}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Entity", "NotificationService\NotificationService.Entity\NotificationService.Entity.csproj", "{BE52290C-98D9-4DA4-B11F-238968E91F85}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.API", "NotificationService\NotificationService.API\NotificationService.API.csproj", "{B2D788D5-AC1E-41B4-9402-0061D82010D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderService.Event", "OrderService\OrderService.Event\OrderService.Event.csproj", "{6BEEC1F3-752F-464C-B668-128C6C48CF56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService.Event", "NotificationService\NotificationService.Event\NotificationService.Event.csproj", "{7E0543D5-3EC6-402B-943D-FCD33F361396}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +64,14 @@ Global
 		{B2D788D5-AC1E-41B4-9402-0061D82010D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2D788D5-AC1E-41B4-9402-0061D82010D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2D788D5-AC1E-41B4-9402-0061D82010D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BEEC1F3-752F-464C-B668-128C6C48CF56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BEEC1F3-752F-464C-B668-128C6C48CF56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BEEC1F3-752F-464C-B668-128C6C48CF56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BEEC1F3-752F-464C-B668-128C6C48CF56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E0543D5-3EC6-402B-943D-FCD33F361396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E0543D5-3EC6-402B-943D-FCD33F361396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E0543D5-3EC6-402B-943D-FCD33F361396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E0543D5-3EC6-402B-943D-FCD33F361396}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C32C1615-AB5B-4953-A8E3-FDB5527F1DAE} = {CED95105-DC06-4868-8852-1834FEE49F11}
@@ -68,5 +81,7 @@ Global
 		{E82CC0F6-51F0-454F-94F3-994103BD7F31} = {84E69712-1762-4C28-8671-8576BDC224DB}
 		{BE52290C-98D9-4DA4-B11F-238968E91F85} = {10251387-D136-472B-971F-132B82471A12}
 		{B2D788D5-AC1E-41B4-9402-0061D82010D3} = {10251387-D136-472B-971F-132B82471A12}
+		{6BEEC1F3-752F-464C-B668-128C6C48CF56} = {84E69712-1762-4C28-8671-8576BDC224DB}
+		{7E0543D5-3EC6-402B-943D-FCD33F361396} = {10251387-D136-472B-971F-132B82471A12}
 	EndGlobalSection
 EndGlobal

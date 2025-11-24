@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using StockService.Event.Exceptions;
+using OrderService.Event.Exceptions;
 
-namespace StockService.Event
+namespace OrderService.Event
 {
     public class EventManager : IAsyncDisposable
     {
@@ -54,22 +54,25 @@ namespace StockService.Event
                 autoDelete: false);
         }
 
-        public async Task PublishAsync<T>(T @event, string routingKey, string queueName)
+        public async Task PublishAsync<T>(T @event, string routingKey, string[] queueNames)
         {
             try
             {
-                await _channel.QueueDeclareAsync(
-                    queue: queueName,
-                    durable: true,
-                    exclusive: false,
-                    autoDelete: false,
-                    arguments: null);
+                for (int i = 0; i < queueNames.Length; i++)
+                {
+                    await _channel.QueueDeclareAsync(
+                        queue: queueNames[i],
+                        durable: true,
+                        exclusive: false,
+                        autoDelete: false,
+                        arguments: null);
                 
-                await _channel.QueueBindAsync(
-                    queue: queueName,
-                    exchange: ExchangeName,
-                    routingKey: routingKey);
-
+                    await _channel.QueueBindAsync(
+                        queue: queueNames[i],
+                        exchange: ExchangeName,
+                        routingKey: routingKey);
+                }
+                 
                 var message = JsonSerializer.Serialize(@event);
                 var body = Encoding.UTF8.GetBytes(message);
                 

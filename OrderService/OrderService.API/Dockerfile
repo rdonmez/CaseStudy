@@ -9,6 +9,7 @@ WORKDIR /src
 
 COPY ["./OrderService/OrderService.API/OrderService.API.csproj", "OrderService.API/"]
 COPY ["./OrderService/OrderService.Entity/OrderService.Entity.csproj", "OrderService.Entity/"]
+COPY ["./OrderService/OrderService.Event/OrderService.Event.csproj", "OrderService.Event/"]
 
 RUN dotnet restore "OrderService.API/OrderService.API.csproj"
 

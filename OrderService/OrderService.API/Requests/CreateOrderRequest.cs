@@ -8,6 +8,8 @@ namespace OrderService.API.Requests
     {
         public int CustomerId { get; set; }
         
+        public string CustomerEmail { get; set; }
+        
         public string Address { get; set; }
         
         public List<OrderItem> OrderItems { get; set; }

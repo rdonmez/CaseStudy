@@ -8,6 +8,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["NotificationService/NotificationService.API/NotificationService.API.csproj", "NotificationService/NotificationService.API/"]
 COPY ["NotificationService/NotificationService.Entity/NotificationService.Entity.csproj", "NotificationService/NotificationService.Entity/"]
+COPY ["NotificationService/NotificationService.Event/NotificationService.Event.csproj", "NotificationService/NotificationService.Event/"]
+
 RUN dotnet restore "NotificationService/NotificationService.API/NotificationService.API.csproj"
 COPY . .
 WORKDIR "/src/NotificationService/NotificationService.API"

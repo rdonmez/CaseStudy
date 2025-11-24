@@ -2,7 +2,7 @@ namespace OrderService.Entity.Domain
 {
     public enum OrderStatus
     {
-        Waiting,
+        Created,
         Approved,
         Shipped,
         Delivered,

@@ -31,7 +31,7 @@ namespace StockService.API
             );
              
             services.AddScoped<IStockRepository, StockRepository>(); 
-            services.AddHostedService<StockEventService>();
+            services.AddHostedService<StockUpdateService>();
             services.RegisterRequestHandlers();
             services.AddControllers();
  
