@@ -1,0 +1,59 @@
+services:
+  
+  notification_service:
+    build:
+      context: .
+      dockerfile: NotificationService/NotificationService.API/Dockerfile
+    container_name: notification_service_container
+    ports:
+      - "5003:80"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=stock_db;Username=postgres;Password=postgres
+    depends_on:
+      - postgres
+      - rabbitmq
+    restart: always
+  
+  order_service:
+    build:
+      context: .
+      dockerfile: OrderService/OrderService.API/Dockerfile
+    container_name: order_service_container
+    ports:
+      - "5002:80"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=order_db;Username=postgres;Password=postgres
+    depends_on:
+      - postgres
+      - rabbitmq
+    restart: always
+      
+  stock_service:
+    build:
+      context: .
+      dockerfile: StockService/StockService.API/Dockerfile
+    container_name: stock_service_container
+    ports:
+      - "5001:80"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=stock_db;Username=postgres;Password=postgres
+    depends_on:
+      - postgres
+      - rabbitmq
+    restart: always
+
+  postgres:
+    container_name: postgres
+    image: postgres:13
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"

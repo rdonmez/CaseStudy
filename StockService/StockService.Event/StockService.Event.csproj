@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>StockService.Event</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\StockService.Entity\StockService.Entity.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+      <PackageReference Include="Polly" Version="8.6.4" />
+      <PackageReference Include="RabbitMQ.Client" Version="7.2.0" />
+    </ItemGroup>
+
+</Project>
