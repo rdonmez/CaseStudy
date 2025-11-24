@@ -1,4 +1,4 @@
-# BeymenCaseStudy
+# CaseStudy
 
 ## Requirements
 - Docker
