@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StockService.Entity.Entities;
@@ -21,7 +22,7 @@ namespace StockService.Entity.Repositories
 
         public async Task<IEnumerable<Stock>> GetAllAsync()
         {
-            return await _context.Stocks.ToListAsync();
+            return await _context.Stocks.OrderByDescending(t=> t.UpdatedAt).ToListAsync();
         }
 
         public async Task<Stock> CreateAsync(Stock stock)

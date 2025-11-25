@@ -37,6 +37,8 @@ namespace OrderService.API.Handlers
         
             try
             { 
+                // TODO: Check stock if items are available. 
+                
                 order = await _repository.AddOrderAsync(order); 
             }
             catch (Exception ex)
@@ -51,7 +53,7 @@ namespace OrderService.API.Handlers
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while saving the order. Please try again later.", ex);
+                throw new Exception("An error occurred while publishing the order. Please try again later.", ex);
             }
 
             return order;

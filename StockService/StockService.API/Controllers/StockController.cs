@@ -73,7 +73,7 @@ namespace StockService.API.Controllers
  
             var result = await _mediator.Send(request);
 
-            return Created($"api/v1/stock/{request.ProductId}", result);
-        }
+            return Ok(result);
+        } 
     }
 }

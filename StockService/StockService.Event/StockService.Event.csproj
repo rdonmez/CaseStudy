@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\OrderService\OrderService.Entity\OrderService.Entity.csproj" />
       <ProjectReference Include="..\StockService.Entity\StockService.Entity.csproj" />
     </ItemGroup>
 

@@ -43,8 +43,8 @@ namespace StockService.Event
                         var repository = scope.ServiceProvider.GetRequiredService<IStockRepository>();
                         var stock = await repository.GetByIdAsync(item.ProductId);
 
-                        if (stock.Quantity <= item.Quantity) continue;
-                        // TODO: out of stock. notify.
+                        if (stock.Quantity < item.Quantity) continue;
+                        // TODO: out of stock. rollback, cancel order and notify 
                         
                         stock.Quantity -= item.Quantity;
                         stock.UpdatedAt = DateTime.UtcNow;

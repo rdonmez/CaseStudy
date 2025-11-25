@@ -47,7 +47,7 @@ namespace OrderService.API.Handlers
             }
             catch (DbUpdateException ex)
             {
-                throw new Exception("An error occurred while saving the order. Please try again later.", ex);
+                throw new Exception("An error occurred while changing status of the order. Please try again later.", ex);
             } 
         }
         
