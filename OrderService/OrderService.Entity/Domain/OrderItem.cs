@@ -1,10 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace OrderService.Entity.Domain
 {
     public class OrderItem
     {
         [Key]
+        [JsonIgnore]
         public int Id { get; set; }
         
         public int ProductId { get; set; }
