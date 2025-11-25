@@ -8,10 +8,13 @@ services:
     ports:
       - "5003:80"
     environment:
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=notification_db;Username=postgres;Password=postgres
+      - ConnectionStrings__DefaultConnection=Host=case_study_postgres;Port=5432;Database=notification_db;Username=postgres;Password=postgres
+      - RabbitMQ__Hostname=case_study_rabbitmq
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
     depends_on:
-      - postgres
-      - rabbitmq
+      - case_study_postgres
+      - case_study_rabbitmq
     restart: always
   
   order_service:
@@ -22,10 +25,13 @@ services:
     ports:
       - "5002:80"
     environment:
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=order_db;Username=postgres;Password=postgres
+      - ConnectionStrings__DefaultConnection=Host=case_study_postgres;Port=5432;Database=order_db;Username=postgres;Password=postgres
+      - RabbitMQ__Hostname=case_study_rabbitmq
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
     depends_on:
-      - postgres
-      - rabbitmq
+      - case_study_postgres
+      - case_study_rabbitmq
     restart: always
       
   stock_service:
@@ -36,24 +42,27 @@ services:
     ports:
       - "5001:80"
     environment:
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=stock_db;Username=postgres;Password=postgres
+      - ConnectionStrings__DefaultConnection=Host=case_study_postgres;Port=5432;Database=stock_db;Username=postgres;Password=postgres
+      - RabbitMQ__Hostname=case_study_rabbitmq
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
     depends_on:
-      - postgres
-      - rabbitmq
+      - case_study_postgres
+      - case_study_rabbitmq
     restart: always
 
-  postgres:
-    container_name: postgres
+  case_study_postgres:
+    container_name: case_study_postgres
     image: postgres:13
     ports:
-      - "5432:5432"
+      - "5532:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   
-  rabbitmq:
-    container_name: rabbitmq
+  case_study_rabbitmq:
+    container_name: case_study_rabbitmq
     image: rabbitmq:3-management
     ports:
-      - "15672:15672"
-      - "5672:5672"
+      - "16672:15672"
+      - "5772:5672"
