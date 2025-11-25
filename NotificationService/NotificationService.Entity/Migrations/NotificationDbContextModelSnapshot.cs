@@ -32,9 +32,6 @@ namespace NotificationService.Entity.Migrations
                     b.Property<string>("CustomerEmail")
                         .HasColumnType("text");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("ErrorMessage")
                         .HasColumnType("text");
 
@@ -42,13 +39,10 @@ namespace NotificationService.Entity.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("NotificationType")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Type")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")

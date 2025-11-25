@@ -6,17 +6,12 @@ namespace NotificationService.Entity.Domain
     public class Notification
     {
         public int Id { get; set; }
-        
-        public int OrderId { get; set; }
-        
+       
         public string Message { get; set; } = string.Empty;
         
-        public NotificationType NotificationType { get; set; }
-        
         public NotificationStatus Status { get; set; } = NotificationStatus.Waiting;
-        
-        public int CustomerId { get; set; }
-        
+        public NotificationType Type { get; set; } = NotificationType.Email;
+          
         public string? CustomerEmail { get; set; }
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

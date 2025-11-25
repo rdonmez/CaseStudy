@@ -16,7 +16,6 @@ namespace StockService.Event
         
         private readonly ILogger<StockUpdateService> _logger;
         private readonly EventManager _eventManager;
-        private readonly IStockRepository _repository;
         private readonly IServiceScopeFactory _scopeFactory;
         
         public StockUpdateService(ILogger<StockUpdateService> logger, EventManager eventManager,  IServiceScopeFactory scopeFactory)

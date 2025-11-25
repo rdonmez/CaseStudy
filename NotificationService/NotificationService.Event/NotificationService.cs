@@ -14,11 +14,7 @@ using Polly;
 namespace NotificationService.Event
 {
     public class NotificationService : BackgroundService
-    {  
-        private const string NotificationQueue = "notification_queue";
-        private const string OrderCreatedRoutingKey = "order.created";
-        private const string NotificationSendRoutingKey = "notification.send";
-        
+    {   
         private readonly ILogger<NotificationService> _logger;
         private readonly EventManager _eventManager; 
         private readonly IServiceScopeFactory _scopeFactory;
@@ -33,29 +29,37 @@ namespace NotificationService.Event
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("NotificationService  is starting.");
+            _logger.LogInformation("NotificationService is starting.");
 
-            // Subscribe.
-            await _eventManager.SubscribeAsync<OrderCreated>(
-                queueName: NotificationQueue,
-                routingKey: OrderCreatedRoutingKey,
+            // Subscribe to Order events.
+            await _eventManager.SubscribeAsync<OrderEvent>(
+                queueName: Constant.NotificationQueue,
+                routingKey: Constant.OrderEventsRoutingKey,
                 onMessage: async (orderEvent) =>
                 {
-                    _logger.LogInformation($"Received OrderCreated event for Order Id: {orderEvent.OrderId}");
+                    _logger.LogInformation("Received OrderEvent event from NotificationService for Order Id: {OrderEventOrderId}", orderEvent.OrderId);
 
                     using (var scope = _scopeFactory.CreateScope())
                     {
                         var repository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
-                        var notification = await repository.AddNotificationAsync(new Notification()
-                        {
-                            OrderId = orderEvent.OrderId,
-                            CustomerEmail = orderEvent.CustomerEmail,
-                            CustomerId = orderEvent.CustomerId,
-                            Message = $"Siparişiniz oluşturuldu. OrderId: ${orderEvent.OrderId}. ",
-                            NotificationType = NotificationType.OrderCreated
+                        
+                        var emailNotification = await repository.AddNotificationAsync(new Notification()
+                        { 
+                            CustomerEmail = orderEvent.CustomerEmail, 
+                            Message = GetNotificationMessage(orderEvent),
+                            Type = NotificationType.Email
                         });
                         
-                        await Notify(notification);
+                        var smsNotification = await repository.AddNotificationAsync(new Notification()
+                        { 
+                            CustomerEmail = orderEvent.CustomerEmail, 
+                            Message = GetNotificationMessage(orderEvent),
+                            Type = NotificationType.Sms
+                        });
+                        
+                        await Notify(emailNotification);
+                        
+                        await Notify(smsNotification);
                     }
                     
 
@@ -67,10 +71,34 @@ namespace NotificationService.Event
                 await Task.Delay(1000, stoppingToken);
             }
 
-            _logger.LogInformation("Notification background service is stopping.");
+            _logger.LogInformation("NotificationService is stopping.");
         }
-        
-        async Task Notify(Notification notification)
+ 
+        private string GetNotificationMessage(OrderEvent orderEvent)
+        {
+            if (orderEvent.Status == OrderStatus.Created)
+            {
+                return $"Siparişiniz oluşturuldu. OrderId: {orderEvent.OrderId}. ";
+            }
+            else if (orderEvent.Status == OrderStatus.Approved)
+            {
+                return $"Siparişiniz onaylandı. OrderId: {orderEvent.OrderId}. ";
+            }
+            else if (orderEvent.Status == OrderStatus.Cancelled)
+            {
+                return $"Siparişiniz iptal edildi. OrderId: {orderEvent.OrderId}. ";
+            }
+            else if (orderEvent.Status == OrderStatus.Delivered)
+            {
+                return $"Siparişiniz teslim edildi. OrderId: {orderEvent.OrderId}. ";
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+        }
+         
+        private async Task Notify(Notification notification)
         {
             try
             { 
@@ -85,7 +113,7 @@ namespace NotificationService.Event
             
                 await retryPolicy.ExecuteAsync(async () =>
                 {
-                    await _eventManager.PublishAsync(notificationCreatedEvent, NotificationSendRoutingKey, NotificationQueue);
+                    await _eventManager.PublishAsync(notificationCreatedEvent, Constant.NotificationSendRoutingKey, Constant.NotificationSendQueue);
                 });
             }
             catch (Exception ex)

@@ -18,13 +18,10 @@ namespace NotificationService.API.Handlers
 {
     public class SendNotificationHandler : IRequestHandler<SendNotificationRequest, Notification>
     {
-        private ILogger<SendNotificationHandler> _logger;
+        private readonly ILogger<SendNotificationHandler> _logger;
         private readonly INotificationRepository _repository;
         private readonly EventManager _eventManager;
-
-        private const string NotificationQueue = "notification_queue";
-        private const string NotificationSendRoutingKey = "notification.send";
-        
+ 
         public SendNotificationHandler(INotificationRepository repository, ILogger<SendNotificationHandler> logger, EventManager eventManager)
         {
             _logger = logger;
@@ -36,18 +33,16 @@ namespace NotificationService.API.Handlers
         { 
             try
             {
-                _logger.LogDebug($"Sending notification...");
+                _logger.LogDebug("Sending notification...");
 
                 var notification = await _repository.AddNotificationAsync(new Notification()
                 {
-                    OrderId = request.OrderId,
-                    Message = request.Message,
-                    NotificationType = request.NotificationType,
-                    CustomerId = request.CustomerId,
+                    Type = request.NotificationType,
                     CustomerEmail = request.CustomerEmail,
+                    Message = request.Message,
                 });
 
-                _logger.LogDebug($"Publishing notification...");
+                _logger.LogDebug("Publishing notification...");
                 
                 await Notify(notification);
                  
@@ -58,8 +53,8 @@ namespace NotificationService.API.Handlers
                 throw new Exception("An error occurred while saving the notification. ", ex);
             } 
         }
-        
-        async Task Notify(Notification notification)
+         
+        private async Task Notify(Notification notification)
         {
             try
             { 
@@ -74,7 +69,7 @@ namespace NotificationService.API.Handlers
             
                 await retryPolicy.ExecuteAsync(async () =>
                 {
-                    await _eventManager.PublishAsync(notificationCreatedEvent, NotificationSendRoutingKey, NotificationQueue);
+                    await _eventManager.PublishAsync(notificationCreatedEvent, Constant.NotificationSendRoutingKey, Constant.NotificationSendQueue);
                 });
             }
             catch (Exception ex)

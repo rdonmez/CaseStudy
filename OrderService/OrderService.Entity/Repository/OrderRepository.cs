@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Entity.Domain;
@@ -21,7 +22,7 @@ namespace OrderService.Entity.Repository
 
         public async Task<IEnumerable<Order>> GetAllOrderAsync()
         {
-            return await _context.Orders.Include(o=> o.Items).ToListAsync();
+            return await _context.Orders.Include(o=> o.Items).OrderByDescending(t=> t.OrderDate).ToListAsync();
         }
 
         public async Task<Order> AddOrderAsync(Order order)

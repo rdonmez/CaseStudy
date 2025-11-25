@@ -22,7 +22,7 @@ namespace NotificationService.Entity.Repositories
 
         public async Task<IEnumerable<Notification>> GetAllNotificationsAsync()
         {
-            return await _context.Notifications.ToListAsync();
+            return await _context.Notifications.OrderByDescending(t=>t.CreatedAt).ToListAsync();
         }
 
         public async Task<Notification> AddNotificationAsync(Notification notification)

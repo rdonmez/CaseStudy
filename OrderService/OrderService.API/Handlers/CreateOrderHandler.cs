@@ -16,11 +16,6 @@ namespace OrderService.API.Handlers
     {
         private readonly IOrderRepository _repository;
         private readonly EventManager _eventManager;
-        
-        private const string OrderQueue = "order_queue";
-        private const string StockQueue = "stock_queue";
-        private const string NotificationQueue = "notification_queue";
-        private const string OrderCreatedRoutingKey = "order.created";
          
         public CreateOrderHandler(IOrderRepository repository, EventManager eventManager)
         {
@@ -52,24 +47,7 @@ namespace OrderService.API.Handlers
             try
             {
                 // Publish.
-                var orderCreatedEvent = new OrderCreated
-                {
-                    OrderId = order.Id,
-                    OrderDate = order.OrderDate,
-                    CustomerId = order.CustomerId,
-                    CustomerEmail = order.CustomerEmail,
-                    Total = order.Total,
-                    Items = order.Items
-                };
-            
-                var retryPolicy = Policy
-                    .Handle<MessageException>()
-                    .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
-            
-                await retryPolicy.ExecuteAsync(async () =>
-                {
-                    await _eventManager.PublishAsync(orderCreatedEvent, OrderCreatedRoutingKey, new [] {StockQueue, NotificationQueue});
-                });
+                await Notify(order);
             }
             catch (Exception ex)
             {
@@ -77,6 +55,29 @@ namespace OrderService.API.Handlers
             }
 
             return order;
+        }
+
+        private async Task Notify(Order order)
+        {
+            var orderCreatedEvent = new OrderCreated
+            {
+                OrderId = order.Id,
+                OrderDate = order.OrderDate,
+                CustomerId = order.CustomerId,
+                CustomerEmail = order.CustomerEmail,
+                Total = order.Total,
+                Items = order.Items,
+                Status = order.Status,
+            };
+            
+            var retryPolicy = Policy
+                .Handle<MessageException>()
+                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+            
+            await retryPolicy.ExecuteAsync(async () =>
+            {
+                await _eventManager.PublishAsync(orderCreatedEvent, Constant.OrderCreatedRoutingKey, new [] {Constant.StockQueue, Constant.NotificationQueue});
+            });
         }
     }
 }

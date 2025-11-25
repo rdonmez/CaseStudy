@@ -73,6 +73,20 @@ namespace OrderService.API.Controllers
             var result = await _mediator.Send(request);
             
             return Ok(result);
-        } 
+        }
+        
+        // PUT: api/v1/order/cancel
+        [HttpPut("cancel")]
+        public async Task<IActionResult> Put([FromBody] CancelOrderRequest request)
+        {
+            if (request == null)
+            {
+                return BadRequest();
+            }
+  
+            var result = await _mediator.Send(request);
+            
+            return Ok(result);
+        }
     }
 }

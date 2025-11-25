@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,18 +13,18 @@ using Polly;
 
 namespace OrderService.API.Handlers
 {
-    public class ApproveOrderHandler : IRequestHandler<ApproveOrderRequest, Order?>
+    public class CancelOrderHandler : IRequestHandler<CancelOrderRequest, Order>
     {
         private readonly IOrderRepository _repository;
         private readonly EventManager _eventManager;
         
-        public ApproveOrderHandler(IOrderRepository repository, EventManager eventManager)
+        public CancelOrderHandler(IOrderRepository repository, EventManager eventManager)
         {
             _repository = repository;
             _eventManager = eventManager;
         }
 
-        public async Task<Order?> Handle(ApproveOrderRequest request, CancellationToken cancellationToken)
+        public async Task<Order> Handle(CancelOrderRequest request, CancellationToken cancellationToken)
         {
             Order? order;
 
@@ -38,7 +37,7 @@ namespace OrderService.API.Handlers
                     return null;
                 }
 
-                order.Status = OrderStatus.Approved;
+                order.Status = OrderStatus.Cancelled;
 
                 _repository.UpdateOrder(order);
 
@@ -54,7 +53,7 @@ namespace OrderService.API.Handlers
         
         private async Task Notify(Order order)
         {
-            var orderApprovedEvent = new OrderApproved()
+            var orderCanceledEvent = new OrderCanceled()
             {
                 OrderId = order.Id,
                 OrderDate = order.OrderDate,
@@ -62,7 +61,7 @@ namespace OrderService.API.Handlers
                 CustomerEmail = order.CustomerEmail,
                 Total = order.Total,
                 Items = order.Items,
-                Status = OrderStatus.Approved,
+                Status = OrderStatus.Cancelled,
             };
             
             var retryPolicy = Policy
@@ -71,8 +70,10 @@ namespace OrderService.API.Handlers
             
             await retryPolicy.ExecuteAsync(async () =>
             {
-                await _eventManager.PublishAsync(orderApprovedEvent, Constant.OrderApprovedRoutingKey, new [] {Constant.NotificationQueue});
+                await _eventManager.PublishAsync(orderCanceledEvent, Constant.OrderCanceledRoutingKey, new [] {Constant.NotificationQueue});
             });
         }
     }
+    
+    
 }
